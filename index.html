@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hôtel Oumlil - Rabat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; width: 100%; }
+        h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
+        .glass-effect { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; z-index: 100; }
+        
+        @media (max-width: 640px) {
+            .nav-link { font-size: 10px !important; letter-spacing: 0.02em; font-weight: 700; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased scroll-smooth relative w-full">
+
+    <!-- Navbar -->
+    <nav class="glass-effect shadow-sm fixed w-full z-50 top-0 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                
+                <!-- Hotel Name: Hidden on Mobile, Visible on PC -->
+                <div class="hidden md:block flex-shrink-0">
+                    <span class="font-bold text-2xl text-gray-900 font-serif tracking-tight">Hôtel Oumlil</span>
+                </div>
+
+                <!-- Nav Links: Centered on Mobile, Left-aligned on PC -->
+                <div class="flex flex-1 justify-center md:justify-start md:ml-10 items-center space-x-4 md:space-x-8 uppercase tracking-wider">
+                    <a href="#accueil" class="nav-link text-amber-700">Accueil</a>
+                    <a href="#chambres" class="nav-link text-gray-500 hover:text-amber-700 transition">Chambres</a>
+                    <a href="#services" class="nav-link text-gray-500 hover:text-amber-700 transition">Services</a>
+                    <a href="https://maps.app.goo.gl/hhWZQnGNbnuUppFcA" target="_blank" class="nav-link text-gray-500 hover:text-amber-700 transition">Localisation</a>
+                </div>
+
+                <!-- Reserve Button: Hidden on Mobile, Visible on PC -->
+                <div class="hidden md:block">
+                    <button onclick="openModal()" class="bg-amber-700 hover:bg-amber-800 text-white px-7 py-2.5 rounded-full font-bold transition shadow-md text-sm uppercase tracking-widest">
+                        Réserver
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/2126XXXXXXXX" target="_blank" class="whatsapp-float bg-[#25D366] text-white p-3 rounded-full shadow-2xl">
+        <svg class="w-7 h-7 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg>
+    </a>
+
+    <!-- Lightbox -->
+    <div id="imageViewer" class="hidden fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4" onclick="closeImageViewer()">
+        <img id="fullImage" src="" class="max-h-[85vh] max-w-full rounded shadow-2xl">
+    </div>
+
+    <!-- Modal Reservation -->
+    <div id="reservationModal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <div class="bg-amber-700 p-5 text-center text-white font-serif font-bold text-xl uppercase tracking-widest">Réservation</div>
+            <form id="googleSheetForm" class="p-6 space-y-4">
+                <input type="text" name="Nom" required class="w-full border border-gray-200 rounded-lg p-3 text-sm focus:ring-1 focus:ring-amber-700 outline-none" placeholder="Nom Complet">
+                <input type="tel" name="Telephone" required class="w-full border border-gray-200 rounded-lg p-3 text-sm focus:ring-1 focus:ring-amber-700 outline-none" placeholder="Téléphone">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="date" name="Arrivee" required class="w-full border border-gray-200 rounded-lg p-2 text-xs">
+                    <input type="date" name="Depart" required class="w-full border border-gray-200 rounded-lg p-2 text-xs">
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 rounded-lg transition uppercase tracking-widest text-xs">Confirmer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="accueil" class="relative h-[70vh] md:h-[85vh] flex items-center justify-center pt-16">
+        <div class="absolute inset-0 z-0">
+            <img src="images/facade.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 w-full">
+            <h1 class="text-4xl md:text-8xl font-bold text-white mb-4 drop-shadow-lg font-serif tracking-tight">Hôtel Oumlil</h1>
+            <p class="text-sm md:text-2xl text-gray-200 mb-8 font-light italic leading-relaxed tracking-wide">"L'élégance et le confort au cœur de Rabat."</p>
+            <button onclick="openModal()" class="bg-amber-700 hover:bg-amber-800 text-white px-10 md:px-12 py-3.5 md:py-4 rounded-full font-bold transition shadow-xl uppercase tracking-[0.2em] text-[10px] md:text-sm">Réserver Maintenant</button>
+        </div>
+    </header>
+
+    <!-- Rooms Section -->
+    <section id="chambres" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-2xl md:text-3xl font-serif font-bold text-center mb-10 text-gray-900 uppercase">Nos Chambres</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group"><img src="images/chambre1.jpg" class="w-full h-64 object-cover rounded-xl mb-4 cursor-pointer" onclick="openImageViewer(this.src)"><h4 class="font-bold text-lg font-serif">Standard Room</h4><button onclick="openModal()" class="text-amber-700 text-xs font-bold uppercase tracking-widest mt-1">Réserver ➔</button></div>
+                <div class="group"><img src="images/chambre2.jpg" class="w-full h-64 object-cover rounded-xl mb-4 cursor-pointer" onclick="openImageViewer(this.src)"><h4 class="font-bold text-lg font-serif">Superior Room</h4><button onclick="openModal()" class="text-amber-700 text-xs font-bold uppercase tracking-widest mt-1">Réserver ➔</button></div>
+                <div class="group"><img src="images/suite.jpg" class="w-full h-64 object-cover rounded-xl mb-4 cursor-pointer" onclick="openImageViewer(this.src)"><h4 class="font-bold text-lg font-serif">Executive Suite</h4><button onclick="openModal()" class="text-amber-700 text-xs font-bold uppercase tracking-widest mt-1">Réserver ➔</button></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-gray-100 py-12 border-y border-gray-200 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-8 italic">Installations & Services</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+                    <span class="text-2xl mb-1 block">🍽️</span>
+                    <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-600">Restaurant</span>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+                    <span class="text-2xl mb-1 block">🍸</span>
+                    <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-600">Piano Bar</span>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+                    <span class="text-2xl mb-1 block">💼</span>
+                    <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-600">Business</span>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+                    <span class="text-2xl mb-1 block">🅿️</span>
+                    <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-gray-600">Parking</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-gray-400 py-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <span class="font-serif text-white text-xl font-bold tracking-tight">Hôtel Oumlil</span>
+                    <p class="text-[9px] uppercase tracking-widest mt-1">Rabat, Agdal</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8 text-[9px] uppercase tracking-[0.2em] font-bold italic">
+                    <span>📍 31, Ave Okba</span>
+                    <span>📞 +212 (0) 537 67 01 01</span>
+                    <span>✉️ contact@hoteloumlil.com</span>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-white/5 text-[8px] uppercase tracking-[0.3em] opacity-40">
+                &copy; 2026 Hôtel Oumlil. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openImageViewer(src) { document.getElementById('fullImage').src = src; document.getElementById('imageViewer').classList.remove('hidden'); }
+        function closeImageViewer() { document.getElementById('imageViewer').classList.add('hidden'); }
+        function openModal() { document.getElementById('reservationModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('reservationModal').classList.add('hidden'); }
+
+        document.getElementById('googleSheetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Envoi...";
+            const scriptURL = 'VOTRE_LIEN_GOOGLE_APP_SCRIPT_ICI';
+            if(scriptURL === 'VOTRE_LIEN_GOOGLE_APP_SCRIPT_ICI') {
+                alert("Réservation confirmée !"); closeModal(); btn.innerText = "Confirmer";
+                return;
+            }
+            fetch(scriptURL, { method: 'POST', body: new FormData(this)})
+                .then(r => { alert('Réservation Envoyée !'); closeModal(); this.reset(); btn.innerText = "Confirmer"; })
+                .catch(e => { alert('Erreur !'); btn.innerText = "Confirmer"; });
+        });
+    </script>
+</body>
+</html>
